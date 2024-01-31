@@ -42,7 +42,11 @@ class CashierConnectServiceProvider extends ServiceProvider
      */
     protected function initializeMigrations()
     {
-        if (Cashier::$runsMigrations && $this->app->runningInConsole()) {
+        if (!isset(Cashier::$runsMigrations) || !$this->app->runningInConsole()) {
+            return;
+        }
+
+        if (Cashier::$runsMigrations) {
             $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         }
     }
